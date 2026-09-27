@@ -1,2 +1,3 @@
-print("Hello world")
-print("Hello again")
+print("Name:")
+print(f"Hello {name}")
+
