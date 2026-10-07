@@ -1,3 +1,3 @@
-print("Name:")
+name=input("name: ")
 print(f"Hello {name}")
-print("hello from main")
+print("hello from Git course")
