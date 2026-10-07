@@ -1,4 +1,4 @@
-# git_repo - eddited by andrss2
+# git_repo - edited by andrss2 & AEArtejevs
 1.
 2.
 3.
