@@ -24,4 +24,11 @@ export class ProductsService {
             data: product
         });
     }
+
+    update(id: number, product: Partial<Pick<Product, 'name' | 'price' | 'stock'>>) {
+        return this.prisma.product.update({
+            where: { id },
+            data: product
+        });
+    }
 }
