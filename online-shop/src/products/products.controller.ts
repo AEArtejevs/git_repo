@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
 import { Product } from './product.entity';
 import { ProductsService } from './products.service';
-import { PrismaService } from '../prisma/prisma.service';
 
 @Controller('products')
 export class ProductsController {
@@ -20,5 +19,10 @@ export class ProductsController {
     @Post()
     create(@Body() product: Product) {
         return this.productsService.create(product);
+    }
+
+    @Patch(':id')
+    update(@Param('id', ParseIntPipe) id: number, @Body() product: Partial<Product>) { // ParseIntPipe converts the URL ID to a number and rejects invalid values.
+        return this.productsService.update(id, product);
     }
 }
