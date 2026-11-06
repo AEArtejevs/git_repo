@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
 import { Product } from './product.entity';
 import { ProductsService } from './products.service';
 
@@ -24,5 +24,10 @@ export class ProductsController {
     @Patch(':id')
     update(@Param('id', ParseIntPipe) id: number, @Body() product: Partial<Product>) { // ParseIntPipe converts the URL ID to a number and rejects invalid values.
         return this.productsService.update(id, product);
+    }
+
+    @Delete(':id')
+    delete(@Param('id', ParseIntPipe) id: number) {
+        return this.productsService.delete(id);
     }
 }
