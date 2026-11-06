@@ -1,21 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { Product } from './product.entity';
-
+import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class ProductsService {
-    private products: Product[] = [];
+  constructor(private readonly prisma: PrismaService) {}
 
-    getAll(): Product[] {
-        return this.products;
+    getAll() {
+        return this.prisma.product.findMany({ 
+            orderBy: { id: 'asc' } 
+        });
     }
 
-    getOne(id: number): Product | undefined {
-        return this.products.find(product => product.id === id);
-    }
 
-    create(product: Product): Product {
-        product.id = this.products.length + 1;
-        this.products.push(product);
+    async getOne(id: number) {
+        const product = await this.prisma.product.findUnique({ 
+            where: { id } 
+        });
         return product;
+    }
+
+    create(product: Pick<Product, 'name' | 'price' | 'stock'>) {
+        return this.prisma.product.create({
+            data: product
+        });
     }
 }

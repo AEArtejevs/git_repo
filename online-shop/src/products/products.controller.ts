@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { Product } from './product.entity';
 import { ProductsService } from './products.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Controller('products')
 export class ProductsController {
