@@ -25,3 +25,6 @@ Content-Type: application/json
 {
     "name": "Anna Berzina-Ozola"
 }
+
+### Delete user
+DELETE {{baseUrl}}/4
