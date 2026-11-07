@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Post, Body} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Post, Body, Patch} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 
@@ -19,5 +19,10 @@ export class UsersController {
     @Post()
     create(@Body() user: User) {
         return this.usersService.create(user);
+    }
+
+    @Patch(':id')
+    update(@Param('id', ParseIntPipe) id: number, @Body() user: Partial<User>) { // ParseIntPipe converts the URL ID to a number and rejects invalid values.
+        return this.usersService.update(id, user);
     }
 }
