@@ -32,5 +32,11 @@ export class UsersService {
         });
     }
 
+    delete(id: number) {
+        return this.prisma.user.delete({
+            where: { id }
+        });
+    }
+
     
 }
