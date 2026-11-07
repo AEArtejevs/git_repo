@@ -17,3 +17,11 @@ Content-Type: application/json
     "name": "Peteris Liepa",
     "email": "peteris@example.com"
 }
+
+### Update user
+PATCH {{baseUrl}}/{{userId}}
+Content-Type: application/json
+
+{
+    "name": "Anna Berzina-Ozola"
+}
