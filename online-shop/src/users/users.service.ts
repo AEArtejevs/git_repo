@@ -23,5 +23,14 @@ export class UsersService {
             data: user
         });
     }
+
+
+    update(id: number, user: Partial<Pick<User, 'name' | 'email'>>) {
+        return this.prisma.user.update({
+            where: { id },
+            data: user
+        });
+    }
+
     
 }
