@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-
+import { User } from './user.entity';
 @Injectable()
 export class UsersService {
     constructor(private readonly prisma: PrismaService) {}
@@ -16,6 +16,12 @@ export class UsersService {
             where: { id } 
         });
         return user;
+    }
+
+    create(user: Pick<User, 'name' | 'email'>) {
+        return this.prisma.user.create({
+            data: user
+        });
     }
     
 }
