@@ -1,0 +1,20 @@
+@baseUrl = http://localhost:3000/products
+@productId = 1
+
+### Get products
+GET {{baseUrl}}
+Accept: application/json
+
+### Create a product
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+	"name": "Test product",
+	"description": "Product created by HTTP request",
+	"price": 19.99
+}
+
+### Delete a product
+DELETE {{baseUrl}}/{{productId}}
+Accept: application/json

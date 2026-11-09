@@ -8,7 +8,7 @@ const prisma = new PrismaClient({
 
 async function main() {
     // Empty the table and restart ids, so product 1 is always the same product.
-    await prisma.$executeRaw`TRUNCATE "Product" RESTART IDENTITY`;
+    await prisma.$executeRaw`TRUNCATE "Product", "User" RESTART IDENTITY`;
 
     await prisma.product.createMany({
         data: [
@@ -19,6 +19,15 @@ async function main() {
             { name: 'Webcam', price: 5999, stock: 0 },
         ],
     });
+
+    await prisma.user.createMany({
+        data: [
+            { name: 'Anna Berzina', email: 'anna@example.com' },
+            { name: 'Janis Ozols', email: 'janis@example.com' },
+            { name: 'Liga Kalnina', email: 'liga@example.com' },
+        ],
+    });
+
 }
 
 main()
