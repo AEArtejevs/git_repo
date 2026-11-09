@@ -16,4 +16,21 @@ describe('UsersService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+    it('getAll returns all users', async () => {
+    // Arrange
+    const users = [
+      { id: 1, name: 'Anna', email: 'anna@example.com' },
+      { id: 2, name: 'Janis', email: 'janis@example.com' },
+    ];
+    const fakePrisma = { user: { findMany: async () => users } };
+    const service = new UsersService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.getAll();
+
+    // Assert
+    expect(result).toEqual(users);
+  });
+  
 });
