@@ -32,5 +32,30 @@ describe('UsersService', () => {
     // Assert
     expect(result).toEqual(users);
   });
-  
+
+    it('getOne returns a user by ID', async () => {
+    // Arrange
+    const user = { id: 1, name: 'Anna', email: 'anna@example.com' };
+    const fakePrisma = { user: { findUnique: async () => user } };
+    const service = new UsersService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.getOne(1);
+
+    // Assert
+    expect(result).toEqual(user);
+  });
+
+  it('getOne returns null when user does not exist', async () => {
+    // Arrange
+    const fakePrisma = { user: { findUnique: async () => null } };
+    const service = new UsersService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.getOne(999);
+
+    // Assert
+    expect(result).toBeNull();
+  });
+
 });
