@@ -105,4 +105,24 @@ describe('UsersController', () => {
   });
 
 // ========================================================================================
+
+// DELETE USER ============================================================================
+
+  it('delete passes the user ID to the service', async () => {
+    // Arrange
+    const deletedUser = { id: 1, name: 'Anna', email: 'anna@example.com' };
+    const fakeService = { delete: jest.fn(async () => deletedUser) };
+    const controller = new UsersController(fakeService as unknown as UsersService);
+
+    // Act
+    const result = await controller.delete(1);
+
+    // Assert
+    expect(fakeService.delete).toHaveBeenCalledWith(1);
+    expect(result).toEqual(deletedUser);
+
+  });
+
+// ========================================================================================
+
 });
