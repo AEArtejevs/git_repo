@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
+import { Product } from './product.entity';
 
 describe('ProductsController', () => {
   let controller: ProductsController;
@@ -67,5 +68,22 @@ describe('ProductsController', () => {
 
 // ===========================================================================================
 
+// CREATE PRODUCT ============================================================================
+
+  it('create passes the new product to the service', async () => {
+    // Arrange
+    const newProduct = { name: 'New Product', price: 1999, stock: 15 };
+    const fakeService = { create: jest.fn(async () => ({ id: 4, ...newProduct })) };
+    const controller = new ProductsController(fakeService as unknown as ProductsService);
+
+    // Act
+    const result = await controller.create(newProduct as Product);
+
+    // Assert
+    expect(fakeService.create).toHaveBeenCalledWith(newProduct);
+    expect(result).toEqual({ id: 4, ...newProduct });
+  });
+
+// ===========================================================================================
 
 });
