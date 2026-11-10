@@ -7,7 +7,7 @@ Built with NestJS, Prisma and PostgreSQL.
 
 - Node.js 24 or newer
 - pnpm 10 or newer
-- Docker
+- Docker (Docker Desktop must be running)
 
 ## How to start
 
