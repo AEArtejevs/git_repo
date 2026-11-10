@@ -17,7 +17,7 @@ describe('ProductsService', () => {
     expect(service).toBeDefined();
   });
 
-// GET PRODUCTS ===============================================================================
+// GET PRODUCTS ============================================================================
 
     it('getAll returns all products', async () => {
     // Arrange
@@ -79,7 +79,7 @@ it('create adds a new product', async () => {
 
 // ========================================================================================
 
-// UPDATE PRODUCT ============================================================================
+// UPDATE PRODUCT =========================================================================
 
   it('update returns the changed product', async () => {
     // Arrange
@@ -97,5 +97,20 @@ it('create adds a new product', async () => {
 
 // ========================================================================================
 
+// DELETE PRODUCT =========================================================================
 
+  it('delete removes a product', async () => {
+    // Arrange
+    const deletedProduct = { id: 1, name: 'Laptop', price: 1000, stock: 5 };
+    const fakePrisma = { product: { delete: async () => deletedProduct } };
+    const service = new ProductsService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.delete(1);
+
+    // Assert
+    expect(result).toEqual(deletedProduct);
+  });
+
+// ========================================================================================
 });
