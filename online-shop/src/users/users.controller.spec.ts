@@ -85,4 +85,24 @@ describe('UsersController', () => {
   });
 
 // ========================================================================================
+
+// UPDATE USER ============================================================================
+
+  it('update passes the updated user to the service', async () => {
+    // Arrange
+    const changes = { name: 'Updated Name' };
+    const updatedUser = { id: 1, name: 'Updated Name', email: 'anna@example.com' };
+    const fakeService = { update: jest.fn(async () => updatedUser) };
+    const controller = new UsersController(fakeService as unknown as UsersService);
+
+    // Act
+    const result = await controller.update(1, changes);
+
+    // Assert
+    expect(fakeService.update).toHaveBeenCalledWith(1, changes);
+    expect(result).toEqual(updatedUser);
+
+  });
+
+// ========================================================================================
 });
