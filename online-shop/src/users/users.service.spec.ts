@@ -59,7 +59,7 @@ describe('UsersService', () => {
     // Assert
     expect(result).toBeNull();
   });
-  
+
 // ========================================================================================
 
 // CREATE USER ============================================================================
@@ -78,4 +78,21 @@ describe('UsersService', () => {
   });
 
 // ========================================================================================
+
+// UPDATE USER ============================================================================
+
+  it('update returns the changed user', async () => {
+    // Arrange
+    const changes = { name: 'Anna Berzina-Ozola' };
+    const updatedUser = { id: 1, name: 'Anna Berzina-Ozola', email: 'anna@example.com' };
+    const fakePrisma = { user: { update: async () => updatedUser } };
+    const service = new UsersService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.update(1, changes);
+
+    // Assert
+    expect(result).toEqual(updatedUser);
+  });
+  
 });
