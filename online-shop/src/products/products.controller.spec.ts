@@ -86,4 +86,21 @@ describe('ProductsController', () => {
 
 // ===========================================================================================
 
+// UPDATE PRODUCT ============================================================================
+  it('update passes the updated product to the service', async () => {
+    // Arrange
+    const updatedProduct = { name: 'Updated Product', price: 2499, stock: 20 };
+    const fakeService = { update: jest.fn(async () => ({ id: 1, ...updatedProduct })) };
+    const controller = new ProductsController(fakeService as unknown as ProductsService);
+
+    // Act
+    const result = await controller.update(1, updatedProduct);
+
+    // Assert
+    expect(fakeService.update).toHaveBeenCalledWith(1, updatedProduct);
+    expect(result).toEqual({ id: 1, ...updatedProduct });
+  });
+
+// ===========================================================================================
+
 });
