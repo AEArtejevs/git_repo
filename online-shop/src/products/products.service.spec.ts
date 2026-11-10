@@ -60,4 +60,24 @@ describe('ProductsService', () => {
     expect(result).toBeNull();
   });
 
+// ========================================================================================
+
+// CREATE PRODUCT =========================================================================
+
+it('create adds a new product', async () => {
+  // Arrange
+  const newProduct = { name: 'Laptop', price: 1000, stock: 5 };
+  const fakePrisma = { product: { create: async () => ({ id: 1, ...newProduct }) } };
+  const service = new ProductsService(fakePrisma as unknown as PrismaService);
+
+  // Act
+  const result = await service.create(newProduct);
+
+  // Assert
+  expect(result).toEqual({ id: 1, ...newProduct });
+});
+
+// ========================================================================================
+
+
 });
