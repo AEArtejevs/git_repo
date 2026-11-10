@@ -18,4 +18,22 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  // GET USER ===============================================================================
+
+  it('getOne asks the service for the right user', async () => {
+    // Arrange
+    const user = { id: 1, name: 'Anna', email: 'anna@example.com' };
+    const fakeService = { getOne: jest.fn(async () => user) };
+    const controller = new UsersController(fakeService as unknown as UsersService);
+
+    // Act
+    const result = await controller.getOne(1);
+
+    // Assert
+    expect(fakeService.getOne).toHaveBeenCalledWith(1);
+    expect(result).toEqual(user);
+  });
+
+  
 });
