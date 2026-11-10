@@ -7,8 +7,8 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-    // Empty the table and restart ids, so product 1 is always the same product.
-    await prisma.$executeRaw`TRUNCATE "Product", "User" RESTART IDENTITY`;
+    // Empty all tables and restart ids. Order tables point to User and Product, so they must be emptied together.
+    await prisma.$executeRaw`TRUNCATE "OrderItem", "Order", "Product", "User" RESTART IDENTITY`;
 
     await prisma.product.createMany({
         data: [
@@ -26,6 +26,32 @@ async function main() {
             { name: 'Janis Ozols', email: 'janis@example.com' },
             { name: 'Liga Kalnina', email: 'liga@example.com' },
         ],
+    });
+
+    // Anna (user 1) paid for 2 mice and 1 cable.
+    await prisma.order.create({
+        data: {
+            userId: 1,
+            status: 'PAID',
+            total: 4897, // 2 x 1999 + 1 x 899
+            items: {
+                create: [
+                    { productId: 1, quantity: 2, price: 1999 },
+                    { productId: 3, quantity: 1, price: 899 },
+                ],
+            },
+        },
+    });
+
+    // Janis (user 2) ordered 1 keyboard but has not paid yet.
+    await prisma.order.create({
+        data: {
+            userId: 2,
+            total: 7999, // 1 x 7999
+            items: {
+                create: [{ productId: 2, quantity: 1, price: 7999 }],
+            },
+        },
     });
 
 }
