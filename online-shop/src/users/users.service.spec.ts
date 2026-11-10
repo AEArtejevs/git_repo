@@ -17,6 +17,8 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
+// GET USER ===============================================================================
+
     it('getAll returns all users', async () => {
     // Arrange
     const users = [
@@ -57,5 +59,23 @@ describe('UsersService', () => {
     // Assert
     expect(result).toBeNull();
   });
+  
+// ========================================================================================
 
+// CREATE USER ============================================================================
+
+  it('create adds a new user', async () => {
+    // Arrange
+    const newUser = { name: 'Anna', email: 'anna@example.com' };
+    const fakePrisma = { user: { create: async () => ({ id: 1, ...newUser }) } };
+    const service = new UsersService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.create(newUser);
+
+    // Assert
+    expect(result).toEqual({ id: 1, ...newUser });
+  });
+
+// ========================================================================================
 });
