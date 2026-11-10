@@ -94,5 +94,23 @@ describe('UsersService', () => {
     // Assert
     expect(result).toEqual(updatedUser);
   });
-  
+
+// ========================================================================================
+
+// DELETE USER ============================================================================
+
+  it('delete returns the removed user', async () => {
+    // Arrange
+    const deletedUser = { id: 3, name: 'Liga', email: 'liga@example.com' };
+    const fakePrisma = { user: { delete: async () => deletedUser } };
+    const service = new UsersService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.delete(3);
+
+    // Assert
+    expect(result).toEqual(deletedUser);
+  });
+
+// ========================================================================================
 });
