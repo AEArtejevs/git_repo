@@ -79,5 +79,23 @@ it('create adds a new product', async () => {
 
 // ========================================================================================
 
+// UPDATE PRODUCT ============================================================================
+
+  it('update returns the changed product', async () => {
+    // Arrange
+    const changes = { name: 'Laptop', price: 1000, stock: 5 };
+    const updatedProduct = { id: 1, ...changes };
+    const fakePrisma = { product: { update: async () => updatedProduct } };
+    const service = new ProductsService(fakePrisma as unknown as PrismaService);
+
+    // Act
+    const result = await service.update(1, changes);
+
+    // Assert
+    expect(result).toEqual(updatedProduct);
+  });
+
+// ========================================================================================
+
 
 });
