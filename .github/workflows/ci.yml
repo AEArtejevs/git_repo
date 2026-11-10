@@ -1,32 +1,74 @@
+# CI = Continuous Integration.
+# GitHub runs these steps on a fresh computer for every pull request to main
+# and every push to main. If any step fails, the run is red and
+# protected main blocks the merge.
 name: CI
 
+# WHEN to run
 on:
   pull_request:
-    branches: [main]
+    branches: [main] # every PR that wants to go into main
   push:
-    branches: [main]
+    branches: [main] # every merge into main
 
 jobs:
+  # IMPORTANT: keep the job name "test".
+  # Protected main waits for a check called "test". If you rename it,
+  # merges get stuck waiting for a check that never comes.
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # a fresh Linux computer from GitHub
     defaults:
       run:
-        working-directory: online-shop
-    steps:
-      - uses: actions/checkout@v4
+        working-directory: online-shop # all "run" commands start in online-shop/
 
-      - uses: pnpm/action-setup@v4
+    steps:
+      # 1. Download the code of this branch onto the CI computer
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      # 2. Install pnpm (the package manager we use)
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 10
 
-      - uses: actions/setup-node@v4
+      # 3. Install Node.js and remember downloaded packages between runs (cache = faster)
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: pnpm
           cache-dependency-path: online-shop/pnpm-lock.yaml
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec prisma generate
-      - run: pnpm lint
-      - run: pnpm build
-      - run: pnpm test
+      # 4. Install exactly the package versions in pnpm-lock.yaml.
+      #    --frozen-lockfile = fail if package.json and the lockfile don't match,
+      #    so CI never quietly uses different versions than your laptop.
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+
+      # 5. Create the Prisma client code from schema.prisma.
+      #    It is not in Git (it is generated), so CI must make it before
+      #    anything that imports it.
+      - name: Generate Prisma client
+        run: pnpm exec prisma generate
+
+      # 6. Lint = look for code mistakes and bad patterns without running the code.
+      #    Fastest check, so it runs first.
+      - name: Lint
+        run: pnpm lint
+
+      # 7. Type check ALL files, including *.spec.ts test files.
+      #    Jest does not check types and build skips test files,
+      #    so without this step type errors in tests would go unnoticed.
+      - name: Type check
+        run: pnpm typecheck
+
+      # 8. Run the unit tests (Jest). Uses fake services/databases,
+      #    so no real Postgres is needed here.
+      - name: Unit tests
+        run: pnpm test
+
+      # 9. Build the app into dist/, the same as for running it for real.
+      #    Last, because it only makes sense if everything above passed.
+      - name: Build
+        run: pnpm build
