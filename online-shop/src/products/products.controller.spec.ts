@@ -103,4 +103,21 @@ describe('ProductsController', () => {
 
 // ===========================================================================================
 
+// DELETE PRODUCT ============================================================================
+
+  it('delete passes the product ID to the service', async () => {
+    // Arrange
+    const fakeService = { delete: jest.fn(async () => ({ id: 1, name: 'Product A', price: 1099, stock: 5 })) };
+    const controller = new ProductsController(fakeService as unknown as ProductsService);
+
+    // Act
+    const result = await controller.delete(1);
+
+    // Assert
+    expect(fakeService.delete).toHaveBeenCalledWith(1);
+    expect(result).toEqual({ id: 1, name: 'Product A', price: 1099, stock: 5 });
+  });
+
+// ===========================================================================================
+
 });
