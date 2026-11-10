@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { User } from './user.entity';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -63,6 +64,24 @@ describe('UsersController', () => {
     // Assert
     expect(fakeService.getOne).toHaveBeenCalledWith(999);
     expect(result).toBeNull();
+  });
+
+// ========================================================================================
+
+// CREATE USER ============================================================================
+
+  it('create passes the new user to the service', async () => {
+    // Arrange
+    const newUser = { name: 'Peteris', email: 'peteris@example.com' };
+    const fakeService = { create: jest.fn(async () => ({ id: 4, ...newUser })) };
+    const controller = new UsersController(fakeService as unknown as UsersService);
+
+    // Act
+    const result = await controller.create(newUser as User);
+
+    // Assert
+    expect(fakeService.create).toHaveBeenCalledWith(newUser);
+    expect(result).toEqual({ id: 4, ...newUser });
   });
 
 // ========================================================================================
