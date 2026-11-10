@@ -35,5 +35,35 @@ describe('UsersController', () => {
     expect(result).toEqual(user);
   });
 
-  
+  it('getAll returns all users', async () => {
+    // Arrange
+    const users = [
+      { id: 1, name: 'Anna', email: 'anna@example.com' },
+      { id: 2, name: 'Janis', email: 'janis@example.com' },
+    ];
+    const fakeService = { getAll: jest.fn(async () => users) };
+    const controller = new UsersController(fakeService as unknown as UsersService);
+
+    // Act
+    const result = await controller.getAll();
+
+    // Assert
+    expect(fakeService.getAll).toHaveBeenCalled();
+    expect(result).toEqual(users);
+  });
+
+  it('getOne returns null when user does not exist', async () => {
+    // Arrange
+    const fakeService = { getOne: jest.fn(async () => null) };
+    const controller = new UsersController(fakeService as unknown as UsersService);
+
+    // Act
+    const result = await controller.getOne(999);
+
+    // Assert
+    expect(fakeService.getOne).toHaveBeenCalledWith(999);
+    expect(result).toBeNull();
+  });
+
+// ========================================================================================
 });
