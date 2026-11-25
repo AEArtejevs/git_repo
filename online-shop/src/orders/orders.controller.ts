@@ -21,4 +21,9 @@ export class OrdersController {
         return this.ordersService.create(order);
     }
 
+    @Patch(':id')
+    update(@Param('id', ParseIntPipe) id: number, @Body() order: Partial<Pick<Order, 'status' | 'total'>>) {
+        return this.ordersService.update(id, order);
+    }
+
 }

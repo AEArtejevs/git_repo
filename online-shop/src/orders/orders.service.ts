@@ -37,5 +37,13 @@ export class OrdersService {
         });
     }
 
+    update(id: number, order: Partial<Pick<Order, 'status' | 'total'>>) {
+        return this.prisma.order.update({
+            where: { id },
+            data: order,
+            include: { user: true, items: { include: { product: true } } },
+        });
+    }
+
 
 }
