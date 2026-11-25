@@ -26,4 +26,9 @@ export class OrdersController {
         return this.ordersService.update(id, order);
     }
 
+    @Delete(':id')
+    delete(@Param('id', ParseIntPipe) id: number) {
+        return this.ordersService.delete(id);
+    }
+
 }

@@ -45,5 +45,12 @@ export class OrdersService {
         });
     }
 
+    delete(id: number) {
+        return this.prisma.order.delete({
+            where: { id },
+            include: { user: true, items: { include: { product: true } } },
+        });
+    }
+
 
 }
