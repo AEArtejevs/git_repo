@@ -1,0 +1,33 @@
+@baseUrl = http://localhost:3000/orders
+@orderId = 1
+
+### Get all orders
+GET {{baseUrl}}
+Accept: application/json
+
+### Get order by ID
+GET {{baseUrl}}/{{orderId}}
+Accept: application/json
+
+### Create order (Liga buys 2 laptop stands)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "userId": 3,
+    "total": 6998,
+    "items": [
+        { "productId": 4, "quantity": 2, "price": 3499 }
+    ]
+}
+
+### Mark order as paid
+PATCH {{baseUrl}}/2
+Content-Type: application/json
+
+{
+    "status": "PAID"
+}
+
+### Delete order
+DELETE {{baseUrl}}/3
